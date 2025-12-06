@@ -1,0 +1,52 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Configuration
+config.toml
+config.yaml
+config.json
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+dist/
+build/
+pkg/
+
+# Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Media files (if storing locally)
+/media/
+/downloads/
+
+# OS
+Thumbs.db

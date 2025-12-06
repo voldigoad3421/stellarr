@@ -1,0 +1,27 @@
+[package]
+name = "stellarr-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Date/time
+chrono = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Utilities
+uuid = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+async-trait = "0.1"
+
+# Database
+sqlx = { workspace = true }

@@ -1,0 +1,32 @@
+[package]
+name = "stellarr-web"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Internal dependencies
+stellarr-core = { workspace = true }
+
+# Frontend framework
+leptos = { workspace = true }
+leptos_meta = { workspace = true }
+leptos_router = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# HTTP client for WASM
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
+web-sys = { version = "0.3", features = ["Window", "Document", "HtmlElement"] }
+console_error_panic_hook = "0.1"
+
+[dependencies.gloo-net]
+version = "0.6"
+features = ["http"]

@@ -1,0 +1,35 @@
+[package]
+name = "stellarr-api"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Internal dependencies
+stellarr-core = { workspace = true }
+stellarr-db = { workspace = true }
+stellarr-providers = { workspace = true }
+
+# Web framework
+actix-web = { workspace = true }
+actix-cors = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Utilities
+uuid = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+# Tracing
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tracing-actix-web = "0.7"

@@ -1,0 +1,19 @@
+use serde::{Deserialize, Serialize};
+
+/// Database configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DatabaseConfig {
+    pub database_type: String,
+    pub database_url: String,
+    pub max_connections: u32,
+}
+
+impl Default for DatabaseConfig {
+    fn default() -> Self {
+        Self {
+            database_type: "sqlite".to_string(),
+            database_url: "sqlite://stellarr.db".to_string(),
+            max_connections: 5,
+        }
+    }
+}
