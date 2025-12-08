@@ -17,7 +17,7 @@ pub fn TvShows() -> impl IntoView {
             match ApiClient::get::<Vec<TvShow>>("/series").await {
                 Ok(data) => set_shows.set(data),
                 Err(e) => log::error!("Failed to fetch TV shows: {}", e),
-            }
+            })
             set_loading.set(false);
         });
     });
@@ -28,7 +28,7 @@ pub fn TvShows() -> impl IntoView {
             match ApiClient::get::<TvShowDetails>(&format!("/series/{}", show_id)).await {
                 Ok(details) => set_show_details.set(Some(details)),
                 Err(e) => log::error!("Failed to fetch show details: {}", e),
-            }
+            })
         });
     };
 
@@ -50,7 +50,7 @@ pub fn TvShows() -> impl IntoView {
 
             <Show
                 when=move || !loading.get()
-                fallback=|| view! { <div class="loading">"Loading TV shows..."</div> }
+                fallback=|| view! { <div class="loading">"Loading TV shows..."</div> })
             >
                 <Show
                     when=move || !shows.get().is_empty()
@@ -60,7 +60,7 @@ pub fn TvShows() -> impl IntoView {
                             <div class="empty-state-title">"No TV shows yet"</div>
                             <div class="empty-state-message">"Use the search bar above to add TV shows to your library"</div>
                         </div>
-                    }
+                    })
                 >
                     <div class="media-grid">
                         <For
@@ -74,7 +74,7 @@ pub fn TvShows() -> impl IntoView {
                                         year=show.year
                                         poster_path=show.poster_path
                                         status=show.status
-                                        on_click=Some(Box::new(move |_| load_show_details(show_id.clone())))
+                                        on_click=move |_| load_show_details(show_id.clone())
                                     />
                                 
                             </For>
@@ -85,7 +85,7 @@ pub fn TvShows() -> impl IntoView {
             <Show when=move || selected_show.get().is_some()>
                 <Modal
                     title=show_details.get().map(|d| d.title.clone()).unwrap_or_default()
-                    on_close=Box::new(move || {
+                    on_close=Box::new(move || {)
                         set_selected_show.set(None);
                         set_show_details.set(None);
                     })
@@ -122,7 +122,7 @@ pub fn TvShows() -> impl IntoView {
                                                                                 <div class="episode-title">{episode.title}</div>
                                                                                 <div class="episode-status">
                                                                                     <span class={format!("badge badge-{}", episode.status_class())}>
-                                                                                        {episode.status}
+                                                                                        {episode.status})
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
@@ -141,8 +141,8 @@ pub fn TvShows() -> impl IntoView {
                 </Modal>
             </Show>
         </div>
-    }
-}
+    })
+})
 
 #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 pub struct TvShow {
@@ -152,7 +152,7 @@ pub struct TvShow {
     pub year: Option<i32>,
     pub poster_path: Option<String>,
     pub status: String,
-}
+})
 
 #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 pub struct TvShowDetails {
@@ -160,7 +160,7 @@ pub struct TvShowDetails {
     pub title: String,
     pub overview: Option<String>,
     pub seasons: Vec<Season>,
-}
+})
 
 #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 pub struct Season {
@@ -169,7 +169,7 @@ pub struct Season {
     pub episode_count: i32,
     pub downloaded_count: i32,
     pub episodes: Vec<Episode>,
-}
+})
 
 #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
 pub struct Episode {
@@ -177,12 +177,12 @@ pub struct Episode {
     pub season_number: i32,
     pub title: String,
     pub status: String,
-}
+})
 
 impl Episode {
     fn episode_code(&self) -> String {
         format!("S{:02}E{:02}", self.season_number, self.episode_number)
-    }
+    })
 
     fn status_class(&self) -> String {
         match self.status.as_str() {
@@ -191,6 +191,6 @@ impl Episode {
             "Missing" => "warning".to_string(),
             "Failed" => "error".to_string(),
             _ => "info".to_string(),
-        }
-    }
-}
+        })
+    })
+})

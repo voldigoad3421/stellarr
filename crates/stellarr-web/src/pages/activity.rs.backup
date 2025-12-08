@@ -71,10 +71,11 @@ pub fn Activity() -> impl IntoView {
                                 each=move || active_downloads.get()
                                 key=|dl| dl.id.clone()
                                 let:download>
-
+                                    view! {
                                         <DownloadItem download=download />
-                                    
-                            </For>
+                                    }
+                                }
+                            />
                         </div>
                     </Show>
                 </Show>
@@ -95,7 +96,7 @@ pub fn Activity() -> impl IntoView {
                             each=move || download_history.get()
                             key=|dl| dl.id.clone()
                             let:download>
-
+                                view! {
                                     <div class="list-item">
                                         <div class="download-info">
                                             <div class="download-title">{download.title}</div>
@@ -108,8 +109,9 @@ pub fn Activity() -> impl IntoView {
                                             {download.status}
                                         </span>
                                     </div>
-                                
-                            </For>
+                                }
+                            }
+                        />
                     </div>
                 </Show>
             </section>

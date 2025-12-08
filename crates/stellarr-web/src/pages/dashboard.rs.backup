@@ -58,9 +58,9 @@ pub fn Dashboard() -> impl IntoView {
 
             <div class="search-section">
                 <h2 class="section-title">"Quick Add"</h2>
-                <SearchBar placeholder="Search for movies or TV shows..." on_search=Box::new(move |query| {
+                <SearchBar placeholder="Search for movies or TV shows..." on_search=move |query| {
                     log::info!("Quick search: {}", query);
-                })/>
+                }/>
             </div>
 
             <div class="recent-activity">
@@ -84,7 +84,7 @@ pub fn Dashboard() -> impl IntoView {
                                 each=move || recent_activity.get()
                                 key=|item| item.id.clone()
                                 let:item>
-
+                                    view! {
                                         <div class="list-item">
                                             <div class="activity-info">
                                                 <div class="activity-title">{item.title}</div>
@@ -92,8 +92,9 @@ pub fn Dashboard() -> impl IntoView {
                                             </div>
                                             <div class="activity-time">{item.time_ago}</div>
                                         </div>
-                                    
-                            </For>
+                                    }
+                                }
+                            />
                         </div>
                     </Show>
                 </Show>

@@ -125,19 +125,19 @@ async fn list_downloads(state: web::Data<AppState>) -> Result<impl Responder, Ap
 async fn get_download(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {
     tracing::debug!("Getting download with id: {}", id);
     
-    Err(ApiError::NotFound(format!("Download with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Download with id {} not found", id)))
 }
 
 async fn cancel_download(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {
     tracing::info!("Cancelling download with id: {}", id);
     
-    Err(ApiError::NotFound(format!("Download with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Download with id {} not found", id)))
 }
 
 async fn retry_download(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {
     tracing::info!("Retrying download with id: {}", id);
     
-    Err(ApiError::NotFound(format!("Download with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Download with id {} not found", id)))
 }
 
 async fn list_download_clients(state: web::Data<AppState>) -> Result<impl Responder, ApiError> {

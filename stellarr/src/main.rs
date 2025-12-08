@@ -32,11 +32,12 @@ async fn main() -> Result<()> {
     tracing::info!("Database connection established");
 
     // Run migrations
-    db.run_migrations().await?;
+    db.migrate().await?;
     tracing::info!("Database migrations completed");
 
     // Create application state
-    let state = stellarr_api::AppState::new(db);
+    let tmdb = stellarr_providers::TmdbClient::new(config.api_keys.tmdb().to_string())?;
+    let state = stellarr_api::AppState::new(db, tmdb);
 
     // Start API server
     let bind_address = format!("{}:{}", config.server.host, config.server.port);

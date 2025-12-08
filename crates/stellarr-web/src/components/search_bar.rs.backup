@@ -11,7 +11,7 @@ pub fn SearchBar(
     on_search: Box<dyn Fn(String) + 'static>,
     /// Loading state
     #[prop(optional)]
-    loading: Option<ReadSignal<bool>>,
+    loading: ReadSignal<bool>,
 ) -> impl IntoView {
     let (query, set_query) = create_signal(String::new());
     let input_ref = create_node_ref::<html::Input>();

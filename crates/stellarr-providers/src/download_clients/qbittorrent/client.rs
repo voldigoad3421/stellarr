@@ -487,7 +487,7 @@ impl DownloadClient for QBittorrentClient {
         let result = self
             .add_torrent(url, None, false)
             .await
-            .map_err(|e| stellarr_core::Error::External(e.to_string()))?;
+            .map_err(|e| stellarr_core::Error::ExternalService(e.to_string()))?;
 
         // Wait a moment for torrent to be added
         tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
@@ -496,7 +496,7 @@ impl DownloadClient for QBittorrentClient {
         let torrents = self
             .get_torrents(None)
             .await
-            .map_err(|e| stellarr_core::Error::External(e.to_string()))?;
+            .map_err(|e| stellarr_core::Error::ExternalService(e.to_string()))?;
 
         // If it's a magnet link, extract the hash from the URL
         if url.starts_with("magnet:?") {
@@ -529,7 +529,7 @@ impl DownloadClient for QBittorrentClient {
         let torrent = self
             .get_torrent(id)
             .await
-            .map_err(|e| stellarr_core::Error::External(e.to_string()))?;
+            .map_err(|e| stellarr_core::Error::ExternalService(e.to_string()))?;
 
         let eta = if torrent.eta > 0 {
             Some(torrent.eta as u64)
@@ -550,7 +550,7 @@ impl DownloadClient for QBittorrentClient {
     async fn remove(&self, id: &str, delete_files: bool) -> stellarr_core::Result<()> {
         self.delete_torrent(id, delete_files)
             .await
-            .map_err(|e| stellarr_core::Error::External(e.to_string()))
+            .map_err(|e| stellarr_core::Error::ExternalService(e.to_string()))
     }
 
     async fn test_connection(&self) -> stellarr_core::Result<bool> {

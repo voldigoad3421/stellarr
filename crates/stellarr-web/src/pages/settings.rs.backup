@@ -100,7 +100,7 @@ fn IndexersSettings() -> impl IntoView {
                     each=move || indexers.get()
                     key=|indexer| indexer.id.clone()
                     let:indexer>
-
+                        view! {
                             <div class="card indexer-card">
                                 <div class="indexer-header">
                                     <h3 class="indexer-name">{indexer.name}</h3>
@@ -124,8 +124,9 @@ fn IndexersSettings() -> impl IntoView {
                                     <button class="btn btn-secondary">"Delete"</button>
                                 </div>
                             </div>
-                        
-                            </For>
+                        }
+                    }
+                />
             </div>
 
             <Show when=move || show_add_form.get()>
@@ -192,7 +193,7 @@ fn DownloadClientsSettings() -> impl IntoView {
                     each=move || clients.get()
                     key=|client| client.id.clone()
                     let:client>
-
+                        view! {
                             <div class="card client-card">
                                 <div class="client-header">
                                     <h3 class="client-name">{client.name}</h3>
@@ -216,8 +217,9 @@ fn DownloadClientsSettings() -> impl IntoView {
                                     <button class="btn btn-secondary">"Delete"</button>
                                 </div>
                             </div>
-                        
-                            </For>
+                        }
+                    }
+                />
             </div>
         </section>
     }

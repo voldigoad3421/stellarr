@@ -52,6 +52,8 @@ pub struct Movie {
     pub genres: Vec<Genre>,
     #[serde(default)]
     pub vote_average: f64,
+    #[serde(default)]
+    pub popularity: f64,
     pub runtime: Option<i32>,
     pub imdb_id: Option<String>,
 }
@@ -72,6 +74,8 @@ pub struct TvShow {
     pub genres: Vec<Genre>,
     #[serde(default)]
     pub vote_average: f64,
+    #[serde(default)]
+    pub popularity: f64,
 }
 
 /// TV show details with seasons
@@ -187,3 +191,4 @@ impl Episode {
             .and_then(|d| NaiveDate::parse_from_str(d, "%Y-%m-%d").ok())
     }
 }
+

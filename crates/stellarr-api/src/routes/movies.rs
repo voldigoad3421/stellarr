@@ -125,7 +125,7 @@ async fn get_movie(
     
     // TODO: Query database for movie
     // For now, return not found
-    Err(ApiError::NotFound(format!("Movie with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Movie with id {} not found", id)))
 }
 
 /// POST /api/movies - Add movie from TMDB
@@ -149,14 +149,12 @@ async fn add_movie(
     // Populate additional fields from TMDB
     movie.year = tmdb_movie.release_date
         .and_then(|d| d.split('-').next().and_then(|y| y.parse().ok()));
-    movie.overview = Some(tmdb_movie.overview);
+    movie.overview = tmdb_movie.overview;
     movie.poster_path = tmdb_movie.poster_path;
     movie.backdrop_path = tmdb_movie.backdrop_path;
     
-    // Try to get IMDb ID from external_ids
-    if let Some(external_ids) = tmdb_movie.external_ids {
-        movie.imdb_id = external_ids.imdb_id;
-    }
+    // IMDb ID is directly on the Movie object from TMDB
+    movie.imdb_id = tmdb_movie.imdb_id;
     
     movie.monitored = req.monitored;
     
@@ -183,7 +181,7 @@ async fn delete_movie(
     
     // TODO: Delete from database
     // For now, return 404
-    Err(ApiError::NotFound(format!("Movie with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Movie with id {} not found", id)))
 }
 
 /// POST /api/movies/{id}/search - Search indexers for movie
@@ -238,3 +236,4 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             .route("/{id}/download", web::post().to(download_movie)),
     );
 }
+

@@ -4,6 +4,7 @@ members = [
     "crates/stellarr-db",
     "crates/stellarr-api",
     "crates/stellarr-providers",
+    "crates/stellarr-web",
     "stellarr",
 ]
 resolver = "2"
@@ -21,6 +22,7 @@ stellarr-core = { path = "crates/stellarr-core" }
 stellarr-db = { path = "crates/stellarr-db" }
 stellarr-api = { path = "crates/stellarr-api" }
 stellarr-providers = { path = "crates/stellarr-providers" }
+stellarr-web = { path = "crates/stellarr-web" }
 
 # Async runtime
 tokio = { version = "1.42", features = ["full"] }
@@ -31,6 +33,11 @@ actix-cors = "0.7"
 
 # Database
 sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "postgres", "migrate", "chrono", "uuid"] }
+
+# Frontend
+leptos = { version = "0.6", features = ["csr"] }
+leptos_meta = "0.6"
+leptos_router = "0.6"
 
 # Serialization
 serde = { version = "1.0", features = ["derive"] }

@@ -1,10 +1,20 @@
 //! Torznab/Newznab API client implementation
 
-use super::error::TorznabError;
+use super::error::{Result, TorznabError};
 use super::models::{Capabilities, Item, TorznabResponse};
 use reqwest::Client;
+use serde::Deserialize;
 use std::collections::HashMap;
 use tracing::{debug, trace, warn};
+
+/// Error response from indexer
+#[derive(Deserialize)]
+struct ErrorResponse {
+    #[serde(rename = "@code")]
+    code: String,
+    #[serde(rename = "@description")]
+    description: String,
+}
 
 /// Torznab/Newznab API client
 ///
@@ -42,7 +52,7 @@ impl TorznabClient {
     ///
     /// Queries the `?t=caps` endpoint to discover what search types and
     /// categories the indexer supports.
-    pub async fn capabilities(&self) -> Result<Capabilities, TorznabError> {
+    pub async fn capabilities(&self) -> Result<Capabilities> {
         debug!(
             indexer = %self.indexer_name,
             "Fetching capabilities"
@@ -101,7 +111,7 @@ impl TorznabClient {
         categories: Option<&[u32]>,
         limit: Option<u32>,
         offset: Option<u32>,
-    ) -> Result<Vec<Item>, TorznabError> {
+    ) -> Result<Vec<Item>> {
         let mut params = HashMap::new();
         params.insert("t", "search".to_string());
         params.insert("apikey", self.api_key.clone());
@@ -143,7 +153,7 @@ impl TorznabClient {
         episode: Option<u32>,
         query: Option<&str>,
         categories: Option<&[u32]>,
-    ) -> Result<Vec<Item>, TorznabError> {
+    ) -> Result<Vec<Item>> {
         let mut params = HashMap::new();
         params.insert("t", "tvsearch".to_string());
         params.insert("apikey", self.api_key.clone());
@@ -195,7 +205,7 @@ impl TorznabClient {
         tmdb_id: Option<u32>,
         query: Option<&str>,
         categories: Option<&[u32]>,
-    ) -> Result<Vec<Item>, TorznabError> {
+    ) -> Result<Vec<Item>> {
         let mut params = HashMap::new();
         params.insert("t", "movie".to_string());
         params.insert("apikey", self.api_key.clone());
@@ -230,7 +240,7 @@ impl TorznabClient {
     async fn execute_search(
         &self,
         params: HashMap<&str, String>,
-    ) -> Result<Vec<Item>, TorznabError> {
+    ) -> Result<Vec<Item>> {
         debug!(
             indexer = %self.indexer_name,
             search_type = ?params.get("t"),
@@ -291,15 +301,8 @@ impl TorznabClient {
     }
 
     /// Parse error response from indexer
-    fn parse_error(&self, xml: &str) -> Result<TorznabError, TorznabError> {
+    fn parse_error(&self, xml: &str) -> Result<TorznabError> {
         // Try to parse as error XML
-        #[derive(Deserialize)]
-        struct ErrorResponse {
-            #[serde(rename = "@code")]
-            code: String,
-            #[serde(rename = "@description")]
-            description: String,
-        }
 
         if let Ok(error) = quick_xml::de::from_str::<ErrorResponse>(xml) {
             return Ok(TorznabError::IndexerError {
@@ -312,7 +315,7 @@ impl TorznabClient {
     }
 
     /// Test the connection to the indexer
-    pub async fn test(&self) -> Result<bool, TorznabError> {
+    pub async fn test(&self) -> Result<bool> {
         debug!(indexer = %self.indexer_name, "Testing connection");
 
         // Try to fetch capabilities as a connection test

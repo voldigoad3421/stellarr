@@ -64,8 +64,8 @@ pub fn Movies() -> impl IntoView {
             <div class="search-section">
                 <SearchBar
                     placeholder="Search for movies to add..."
-                    on_search=Box::new(handle_search)
-                    loading=Some(searching)
+                    on_search=handle_search
+                    loading=searching
                 />
             </div>
 
@@ -88,18 +88,19 @@ pub fn Movies() -> impl IntoView {
                             each=move || movies.get()
                             key=|movie| movie.id.clone()
                             let:movie>
-
+                                view! {
                                     <MediaCard
                                         title=movie.title
                                         year=movie.year
                                         poster_path=movie.poster_path
                                         status=movie.status
-                                        on_click=Some(Box::new(move |_| {
+                                        on_click=move |_| {
                                             log::info!("Clicked movie: {}", movie.title);
-                                        }))
+                                        }
                                     />
-                                
-                            </For>
+                                }
+                            }
+                        />
                     </div>
                 </Show>
             </Show>
@@ -107,7 +108,7 @@ pub fn Movies() -> impl IntoView {
             <Show when=move || show_add_modal.get()>
                 <Modal
                     title="Add Movie"
-                    on_close=Box::new(move || set_show_add_modal.set(false))
+                    on_close=move || set_show_add_modal.set(false)
                 >
                     <div class="search-results">
                         <For
@@ -130,7 +131,8 @@ pub fn Movies() -> impl IntoView {
                                         </button>
                                     </div>
                                 }
-                            </For>
+                            }
+                        />
                     </div>
                 </Modal>
             </Show>

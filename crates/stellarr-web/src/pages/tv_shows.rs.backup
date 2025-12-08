@@ -42,9 +42,9 @@ pub fn TvShows() -> impl IntoView {
             <div class="search-section">
                 <SearchBar
                     placeholder="Search for TV shows to add..."
-                    on_search=Box::new(move |query| {
+                    on_search=move |query| {
                         log::info!("Search TV shows: {}", query);
-                    })
+                    }
                 />
             </div>
 
@@ -74,10 +74,11 @@ pub fn TvShows() -> impl IntoView {
                                         year=show.year
                                         poster_path=show.poster_path
                                         status=show.status
-                                        on_click=Some(Box::new(move |_| load_show_details(show_id.clone())))
+                                        on_click=move |_| load_show_details(show_id.clone())
                                     />
-                                
-                            </For>
+                                }
+                            }
+                        />
                     </div>
                 </Show>
             </Show>
@@ -85,10 +86,10 @@ pub fn TvShows() -> impl IntoView {
             <Show when=move || selected_show.get().is_some()>
                 <Modal
                     title=show_details.get().map(|d| d.title.clone()).unwrap_or_default()
-                    on_close=Box::new(move || {
+                    on_close=move || {
                         set_selected_show.set(None);
                         set_show_details.set(None);
-                    })
+                    }
                 >
                     <Show when=move || show_details.get().is_some()>
                         {move || {
@@ -116,7 +117,7 @@ pub fn TvShows() -> impl IntoView {
                                                                     each=move || season.episodes.clone()
                                                                     key=|ep| ep.episode_number
                                                                     let:episode>
-
+                                                                        view! {
                                                                             <div class="episode-item">
                                                                                 <div class="episode-number">{episode.episode_code()}</div>
                                                                                 <div class="episode-title">{episode.title}</div>
@@ -126,17 +127,19 @@ pub fn TvShows() -> impl IntoView {
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
-                                                                        
-                            </For>
+                                                                        }
+                                                                    }
+                                                                />
                                                             </div>
                                                         </Show>
                                                     </div>
-                                                
-                            </For>
+                                                }
+                                            }
+                                        />
                                     </div>
                                 </div>
                             })
-                        }})
+                        }}
                     </Show>
                 </Modal>
             </Show>

@@ -120,7 +120,7 @@ async fn list_indexers(state: web::Data<AppState>) -> Result<impl Responder, Api
 async fn get_indexer(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {
     tracing::debug!("Getting indexer with id: {}", id);
     
-    Err(ApiError::NotFound(format!("Indexer with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Indexer with id {} not found", id)))
 }
 
 async fn create_indexer(state: web::Data<AppState>, req: web::Json<CreateIndexerRequest>) -> Result<impl Responder, ApiError> {
@@ -150,13 +150,13 @@ async fn update_indexer(
 ) -> Result<impl Responder, ApiError> {
     tracing::info!("Updating indexer with id: {}", id);
     
-    Err(ApiError::NotFound(format!("Indexer with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Indexer with id {} not found", id)))
 }
 
 async fn delete_indexer(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {
     tracing::info!("Deleting indexer with id: {}", id);
     
-    Err(ApiError::NotFound(format!("Indexer with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("Indexer with id {} not found", id)))
 }
 
 async fn test_indexer(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {

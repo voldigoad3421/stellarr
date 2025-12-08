@@ -146,7 +146,7 @@ async fn list_tv_shows(state: web::Data<AppState>) -> Result<impl Responder, Api
 
 async fn get_tv_show(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {
     tracing::debug!("Getting TV show with id: {}", id);
-    Err(ApiError::NotFound(format!("TV show with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("TV show with id {} not found", id)))
 }
 
 async fn add_tv_show(state: web::Data<AppState>, req: web::Json<AddTvShowRequest>) -> Result<impl Responder, ApiError> {
@@ -156,7 +156,7 @@ async fn add_tv_show(state: web::Data<AppState>, req: web::Json<AddTvShowRequest
     
     let mut series = Series::new(req.tmdb_id, tmdb_show.name.clone(), req.quality_profile_id);
     series.original_title = Some(tmdb_show.original_name);
-    series.overview = Some(tmdb_show.overview);
+    series.overview = tmdb_show.overview;
     series.poster_path = tmdb_show.poster_path;
     series.backdrop_path = tmdb_show.backdrop_path;
     series.monitored = req.monitored;
@@ -189,7 +189,7 @@ async fn add_tv_show(state: web::Data<AppState>, req: web::Json<AddTvShowRequest
 
 async fn delete_tv_show(state: web::Data<AppState>, id: web::Path<Uuid>) -> Result<impl Responder, ApiError> {
     tracing::info!("Deleting TV show with id: {}", id);
-    Err(ApiError::NotFound(format!("TV show with id {} not found", id)))
+    Err::<HttpResponse, _>(ApiError::NotFound(format!("TV show with id {} not found", id)))
 }
 
 async fn search_tv_show(state: web::Data<AppState>, id: web::Path<Uuid>, query: web::Query<SearchEpisodesRequest>) -> Result<impl Responder, ApiError> {
@@ -211,3 +211,4 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             .route("/{id}/search", web::post().to(search_tv_show)),
     );
 }
+

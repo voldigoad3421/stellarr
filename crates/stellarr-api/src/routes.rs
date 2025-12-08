@@ -7,6 +7,7 @@ pub mod search;
 pub mod indexers;
 pub mod downloads;
 pub mod system;
+pub mod static_pages;
 
 /// Configure all API routes
 pub fn configure(cfg: &mut web::ServiceConfig) {
@@ -19,5 +20,6 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             .configure(indexers::configure)
             .configure(downloads::configure)
             .configure(system::configure),
-    );
+    )
+    .configure(static_pages::configure);
 }

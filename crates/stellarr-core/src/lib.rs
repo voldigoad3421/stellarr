@@ -1,3 +1,13 @@
+//! Core domain models and business logic for Stellarr media management
+//!
+//! This crate contains:
+//! - Domain models (Media, Series, Episodes, etc.)
+//! - Quality profiles and upgrade logic
+//! - Indexer and download client configuration
+//! - Release scoring and selection algorithms
+//! - Business logic traits
+//! - Common error types
+
 pub mod domain;
 pub mod error;
 pub mod traits;
@@ -21,14 +31,3 @@ pub use domain::{
     // Release types
     Release, ReleaseSelector,
 };
-
-/// Core domain models and business logic for Stellarr media management
-///
-/// This crate contains:
-/// - Domain models (Media, Series, Episodes, etc.)
-/// - Quality profiles and upgrade logic
-/// - Indexer and download client configuration
-/// - Release scoring and selection algorithms
-/// - Business logic traits
-/// - Common error types
-/// - Shared utilities

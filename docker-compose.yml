@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  stellarr:
+    build: .
+    container_name: stellarr
+    ports:
+      - "8080:8080"
+    volumes:
+      # Persist database and config
+      - stellarr_data:/app/data
+      # Mount your media folders (adjust paths as needed)
+      # - /path/to/movies:/media/movies
+      # - /path/to/tv:/media/tv
+    environment:
+      - STELLARR_SERVER_HOST=0.0.0.0
+      - STELLARR_SERVER_PORT=8080
+      - STELLARR_DATABASE_TYPE=sqlite
+      - STELLARR_DATABASE_URL=sqlite:///app/data/stellarr.db
+      # Add your API keys here or use .env file
+      # - STELLARR_API_KEYS_TMDB_ACCESS_TOKEN=your_token
+    restart: unless-stopped
+
+volumes:
+  stellarr_data:

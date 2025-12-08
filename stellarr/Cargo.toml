@@ -19,6 +19,9 @@ stellarr-providers = { workspace = true }
 # Async runtime
 tokio = { workspace = true }
 
+# Web server
+actix-web = { workspace = true }
+
 # Configuration
 config = { workspace = true }
 dotenv = { workspace = true }

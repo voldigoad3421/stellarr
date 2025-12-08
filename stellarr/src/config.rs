@@ -104,8 +104,10 @@ impl AppConfig {
             .set_default("server.port", 8080)?
             // Database defaults
             .set_default("database.database_type", "sqlite")?
-            .set_default("database.database_url", "sqlite://stellarr.db")?
+            .set_default("database.database_url", "sqlite:///app/data/stellarr.db?mode=rwc")?
             .set_default("database.max_connections", 5)?
+            .set_default("api_keys.tmdb_access_token", "YOUR_PROJECT_TMDB_KEY_HERE")?
+            .set_default("api_keys.fanart_api_key", "YOUR_PROJECT_FANART_KEY_HERE")?
             // API key defaults are handled by ApiKeysConfig::default_*
             // Load from config file if exists
             .add_source(File::with_name("config").required(false))

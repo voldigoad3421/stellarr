@@ -6,10 +6,10 @@ use crate::{AppState, ApiError};
 pub struct SearchQuery {
     pub q: String,
     #[serde(default = "default_page")]
-    pub page: u32,
+    pub page: i32,
 }
 
-fn default_page() -> u32 {
+fn default_page() -> i32 {
     1
 }
 
@@ -20,12 +20,11 @@ pub struct MovieSearchResult {
     pub original_title: String,
     pub release_date: Option<String>,
     pub year: Option<i32>,
-    pub overview: String,
+    pub overview: Option<String>,
     pub poster_path: Option<String>,
     pub backdrop_path: Option<String>,
     pub popularity: f64,
     pub vote_average: f64,
-    pub vote_count: u32,
 }
 
 #[derive(Debug, Serialize)]
@@ -35,34 +34,33 @@ pub struct TvSearchResult {
     pub original_name: String,
     pub first_air_date: Option<String>,
     pub year: Option<i32>,
-    pub overview: String,
+    pub overview: Option<String>,
     pub poster_path: Option<String>,
     pub backdrop_path: Option<String>,
     pub popularity: f64,
     pub vote_average: f64,
-    pub vote_count: u32,
 }
 
 #[derive(Debug, Serialize)]
 pub struct MovieSearchResponse {
     pub results: Vec<MovieSearchResult>,
-    pub page: u32,
-    pub total_pages: u32,
-    pub total_results: u32,
+    pub page: i32,
+    pub total_pages: i32,
+    pub total_results: i32,
 }
 
 #[derive(Debug, Serialize)]
 pub struct TvSearchResponse {
     pub results: Vec<TvSearchResult>,
-    pub page: u32,
-    pub total_pages: u32,
-    pub total_results: u32,
+    pub page: i32,
+    pub total_pages: i32,
+    pub total_results: i32,
 }
 
 async fn search_movies(state: web::Data<AppState>, query: web::Query<SearchQuery>) -> Result<impl Responder, ApiError> {
     tracing::info!("Searching TMDB for movies: {} (page {})", query.q, query.page);
     
-    let tmdb_response = state.tmdb.search_movies(&query.q, Some(query.page)).await?;
+    let tmdb_response = state.tmdb.search_movies(&query.q, Some(query.page as u32)).await?;
     
     let results: Vec<MovieSearchResult> = tmdb_response.results.into_iter().map(|movie| {
         let year = movie.release_date.as_ref()
@@ -80,7 +78,6 @@ async fn search_movies(state: web::Data<AppState>, query: web::Query<SearchQuery
             backdrop_path: movie.backdrop_path,
             popularity: movie.popularity,
             vote_average: movie.vote_average,
-            vote_count: movie.vote_count,
         }
     }).collect();
     
@@ -95,7 +92,7 @@ async fn search_movies(state: web::Data<AppState>, query: web::Query<SearchQuery
 async fn search_tv(state: web::Data<AppState>, query: web::Query<SearchQuery>) -> Result<impl Responder, ApiError> {
     tracing::info!("Searching TMDB for TV shows: {} (page {})", query.q, query.page);
     
-    let tmdb_response = state.tmdb.search_tv(&query.q, Some(query.page)).await?;
+    let tmdb_response = state.tmdb.search_tv(&query.q, Some(query.page as u32)).await?;
     
     let results: Vec<TvSearchResult> = tmdb_response.results.into_iter().map(|show| {
         let year = show.first_air_date.as_ref()
@@ -113,7 +110,6 @@ async fn search_tv(state: web::Data<AppState>, query: web::Query<SearchQuery>) -
             backdrop_path: show.backdrop_path,
             popularity: show.popularity,
             vote_average: show.vote_average,
-            vote_count: show.vote_count,
         }
     }).collect();
     
@@ -132,3 +128,5 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             .route("/tv", web::get().to(search_tv)),
     );
 }
+
+

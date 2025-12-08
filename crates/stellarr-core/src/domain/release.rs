@@ -87,7 +87,7 @@ impl Release {
             indexer_id,
             indexer_name,
             protocol,
-            title,
+            title: title.clone(),
             download_url,
             info_hash: None,
             size_bytes,

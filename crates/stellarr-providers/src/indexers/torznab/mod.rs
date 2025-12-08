@@ -8,7 +8,7 @@ pub mod error;
 pub mod models;
 
 pub use client::TorznabClient;
-pub use error::TorznabError;
+pub use error::{Result, TorznabError};
 pub use models::{
     Capabilities, Category, Item, SearchResponse, TorznabAttr, TorznabResponse,
 };

@@ -30,3 +30,6 @@ console_error_panic_hook = "0.1"
 [dependencies.gloo-net]
 version = "0.6"
 features = ["http"]
+
+# Logging
+log = "0.4"

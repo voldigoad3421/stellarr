@@ -53,8 +53,11 @@ pub enum TorznabError {
     Other(String),
 }
 
+/// Result type alias for Torznab operations
+pub type Result<T> = std::result::Result<T, TorznabError>;
+
 impl From<TorznabError> for stellarr_core::Error {
     fn from(err: TorznabError) -> Self {
-        stellarr_core::Error::External(err.to_string())
+        stellarr_core::Error::ExternalService(err.to_string())
     }
 }
